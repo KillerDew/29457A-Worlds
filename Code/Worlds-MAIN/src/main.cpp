@@ -2,6 +2,7 @@
 #include "lemlib/api.hpp"
 #include "lemlib/asset.hpp"
 #include "lemlib/chassis/chassis.hpp"
+#include "pros/motors.h"
 #include "pros/motors.hpp"
 /**
  * A callback function for LLEMU's center button.
@@ -21,8 +22,8 @@ void on_center_button() {
 
 
 // ALL DEVICES
-pros::MotorGroup LeftDrive ({17, 18, 19});
-pros::MotorGroup RightDrive ({7, 12, 9});
+pros::MotorGroup LeftDrive ({pros::Motor (18, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (17, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (19, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES)});
+pros::MotorGroup RightDrive ({pros::Motor (7, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (12, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (9, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES)});
 pros::IMU imu (3);
 // LemLib Definitions
 lemlib::Drivetrain lemDrivetrain{
@@ -43,19 +44,19 @@ lemlib::OdomSensors odomSensors{
 // lateral motion controller
 lemlib::ControllerSettings linearController(10, // proportional gain (kP)
                                             0, // integral gain (kI)
-                                            3, // derivative gain (kD)
+                                            30, // derivative gain (kD)
                                             3, // anti windup
                                             1, // small error range, in inches
-                                            100, // small error range timeout, in milliseconds
+                                            1000, // small error range timeout, in milliseconds
                                             3, // large error range, in inches
                                             500, // large error range timeout, in milliseconds
-                                            20 // maximum acceleration (slew)
+                                            10 // maximum acceleration (slew)
 );
 
 // angular motion controller
 lemlib::ControllerSettings angularController(2, // proportional gain (kP)
                                              0, // integral gain (kI)
-                                             10, // derivative gain (kD)
+                                             1, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
@@ -106,7 +107,7 @@ void competition_initialize() {}
 ASSET(testinggg_txt);
 void autonomous() {
 	chassis.setPose(0, 0, 0);
-	chassis.moveToPose(0, 40, 0, 20000);
+	chassis.moveToPoint(10, 0, 20000, {false, 127.0/2});
 }
 
 /**
