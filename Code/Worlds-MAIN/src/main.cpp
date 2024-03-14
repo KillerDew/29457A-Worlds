@@ -103,9 +103,10 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-ASSET(testinggg_txt)
+ASSET(testinggg_txt);
 void autonomous() {
-	chassis.follow(testinggg_txt, 15, 20000);
+	chassis.setPose(0, 0, 0);
+	chassis.moveToPose(0, 40, 0, 20000);
 }
 
 /**
