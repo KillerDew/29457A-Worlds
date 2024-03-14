@@ -4,6 +4,47 @@
         "project_name": "Worlds-MAIN",
         "target": "v5",
         "templates": {
+            "LemLib": {
+                "location": "/Users/danieldew/Library/Application Support/PROS/templates/LemLib@0.5.0-rc.6",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "LemLib",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.8.0",
+                "system_files": [
+                    "include/lemlib/LICENSE",
+                    "include/fmt/format-inl.h",
+                    "static/example.txt",
+                    "include/lemlib/logger/baseSink.hpp",
+                    "include/lemlib/VERSION",
+                    "include/lemlib/asset.hpp",
+                    "include/lemlib/logger/telemetrySink.hpp",
+                    "include/lemlib/logger/message.hpp",
+                    "include/lemlib/README.md",
+                    "include/lemlib/api.hpp",
+                    "include/lemlib/logger/buffer.hpp",
+                    "include/lemlib/exitcondition.hpp",
+                    "include/lemlib/util.hpp",
+                    "include/lemlib/chassis/chassis.hpp",
+                    "include/lemlib/chassis/odom.hpp",
+                    "include/lemlib/pid.hpp",
+                    "firmware/LemLib.a",
+                    "include/lemlib/chassis/trackingWheel.hpp",
+                    "include/lemlib/logger/stdout.hpp",
+                    "include/fmt/args.h",
+                    "include/fmt/core.h",
+                    "include/lemlib/pose.hpp",
+                    "firmware/asset.mk",
+                    "include/lemlib/logger/infoSink.hpp",
+                    "include/lemlib/logger/logger.hpp",
+                    "include/fmt/format.h",
+                    "include/lemlib/timer.hpp"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "0.5.0-rc.6"
+            },
             "kernel": {
                 "location": "/Users/danieldew/Library/Application Support/PROS/templates/kernel@3.8.0",
                 "metadata": {
