@@ -1,5 +1,8 @@
 #include "main.h"
 #include "lemlib/api.hpp"
+#include "lemlib/asset.hpp"
+#include "lemlib/chassis/chassis.hpp"
+#include "pros/motors.hpp"
 /**
  * A callback function for LLEMU's center button.
  *
@@ -16,6 +19,51 @@ void on_center_button() {
 	}
 }
 
+
+// ALL DEVICES
+pros::MotorGroup LeftDrive ({17, 18, 19});
+pros::MotorGroup RightDrive ({7, 12, 9});
+pros::IMU imu (3);
+// LemLib Definitions
+lemlib::Drivetrain lemDrivetrain{
+	&LeftDrive,
+	&RightDrive,
+	12,
+	3.25,
+	360,
+	15
+};
+lemlib::OdomSensors odomSensors{
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	&imu
+};
+// lateral motion controller
+lemlib::ControllerSettings linearController(10, // proportional gain (kP)
+                                            0, // integral gain (kI)
+                                            3, // derivative gain (kD)
+                                            3, // anti windup
+                                            1, // small error range, in inches
+                                            100, // small error range timeout, in milliseconds
+                                            3, // large error range, in inches
+                                            500, // large error range timeout, in milliseconds
+                                            20 // maximum acceleration (slew)
+);
+
+// angular motion controller
+lemlib::ControllerSettings angularController(2, // proportional gain (kP)
+                                             0, // integral gain (kI)
+                                             10, // derivative gain (kD)
+                                             3, // anti windup
+                                             1, // small error range, in degrees
+                                             100, // small error range timeout, in milliseconds
+                                             3, // large error range, in degrees
+                                             500, // large error range timeout, in milliseconds
+                                             0 // maximum acceleration (slew)
+);
+lemlib::Chassis chassis (lemDrivetrain, linearController, angularController, odomSensors);
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -23,10 +71,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
-
-	pros::lcd::register_btn1_cb(on_center_button);
+	chassis.calibrate();
 }
 
 /**
@@ -58,7 +103,10 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+ASSET(testinggg_txt)
+void autonomous() {
+	chassis.follow(testinggg_txt, 15, 20000);
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -74,6 +122,7 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	autonomous();
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
