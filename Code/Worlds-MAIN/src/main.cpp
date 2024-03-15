@@ -2,6 +2,7 @@
 #include "lemlib/api.hpp"
 #include "lemlib/asset.hpp"
 #include "lemlib/chassis/chassis.hpp"
+#include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/motors.h"
 #include "pros/motors.hpp"
 /**
@@ -30,9 +31,9 @@ lemlib::Drivetrain lemDrivetrain{
 	&LeftDrive,
 	&RightDrive,
 	12,
-	3.25,
+	lemlib::Omniwheel::NEW_325,
 	360,
-	15
+	5
 };
 lemlib::OdomSensors odomSensors{
 	nullptr,
