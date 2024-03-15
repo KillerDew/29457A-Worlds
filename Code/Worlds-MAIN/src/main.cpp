@@ -22,7 +22,7 @@ void on_center_button() {
 
 
 // ALL DEVICES
-pros::MotorGroup LeftDrive ({pros::Motor (18, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (17, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (19, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES)});
+pros::MotorGroup LeftDrive ({pros::Motor (-18, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (-17, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (-19, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES)});
 pros::MotorGroup RightDrive ({pros::Motor (7, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (12, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES), pros::Motor (9, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES)});
 pros::IMU imu (3);
 // LemLib Definitions
