@@ -1,5 +1,9 @@
 #include "main.h"
 #include "lemlib/api.hpp"
+#include "pros/misc.h"
+#include "pros/rtos.h"
+#include "pros/rtos.hpp"
+#include <functional>
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -25,7 +29,7 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               11, // 10 inch track width
                               lemlib::Omniwheel::NEW_325, // using new 3.25" omnis
                               360, // drivetrain rpm is 360
-                              4 // chase power is 2. If we had traction wheels, it would have been 8
+                              8 // chase power is 2. If we had traction wheels, it would have been 8
 );
 
 // lateral motion controller
@@ -110,7 +114,6 @@ void competition_initialize() {}
 
 // get a path used for pure pursuit
 // this needs to be put outside a function
-ASSET(testinggg_txt); // '.' replaced with "_" to make c++ happy
 
 /**
  * Runs during auto
@@ -118,45 +121,57 @@ ASSET(testinggg_txt); // '.' replaced with "_" to make c++ happy
  * This is an example autonomous routine which demonstrates a lot of the features LemLib has to offer
  */
 void autonomous() {
-    // example movement: Move to x: 20 and y: 15, and face heading 90. Timeout set to 4000 ms
-    chassis.moveToPose(20, 15, 90, 4000);
-    // example movement: Move to x: 0 and y: 0 and face heading 270, going backwards. Timeout set to 4000ms
-    chassis.moveToPose(0, 0, 270, 4000, {.forwards = false});
-    // cancel the movement after it has travelled 10 inches
-    chassis.waitUntil(10);
-    chassis.cancelMotion();
-    // example movement: Turn to face the point x:45, y:-45. Timeout set to 1000
-    // dont turn faster than 60 (out of a maximum of 127)
-    chassis.turnToPoint(45, -45, 1000, {.maxSpeed = 60});
-    // example movement: Turn to face a direction of 90º. Timeout set to 1000
-    // will always be faster than 100 (out of a maximum of 127)
-    chassis.turnToHeading(90, 1000, {.minSpeed = 100});
-    // example movement: Follow the path in path.txt. Lookahead at 15, Timeout set to 4000
-    // following the path with the back of the robot (forwards = false)
-    // see line 116 to see how to define a path
-    //chassis.follow(testinggg_txt, 15, 4000, false);
-    // wait until the chassis has travelled 10 inches. Otherwise the code directly after
-    // the movement will run immediately
-    // Unless its another movement, in which case it will wait
-    chassis.waitUntil(10);
-    pros::lcd::print(4, "Travelled 10 inches during pure pursuit!");
-    // wait until the movement is done
-    chassis.waitUntilDone();
-    pros::lcd::print(4, "pure pursuit finished!");
+	
 }
+
+// Controlling Driving Type
+void CurvatureSplit(){
+	int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+	chassis.curvature(leftY, rightX);
+}
+void Curvature(){
+	int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+	chassis.curvature(leftY, leftX);
+}
+void Tank(){
+	int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+	chassis.tank(leftY, rightY);
+}
+void ArcadeSplit(){
+	int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+	chassis.arcade(leftY, rightX);
+}
+void Arcade(){
+	int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
+	chassis.arcade(leftY, leftX);
+}
+double elapsed;
+void TickUpTimer(void* dt_){
+	double dt = *(double*)dt_;
+	double startTime = pros::c::millis();
+	elapsed = 0;
+	while(elapsed < 5*60*1000){ // Max Timer of 5 mins ([5*60*1000] milliseconds)
+		elapsed = pros::c::millis()-startTime;
+		pros::delay(dt);
+	}
+}
+void (*DriverFunction)() = &CurvatureSplit;
 
 /**
  * Runs in driver control
  */
 void opcontrol() {
+	autonomous();
+	//pros::Task(TickUpTimer, (void*)"0.005", "Elpased Timer");
     // controller
     // loop to continuously update motors
     while (true) {
-        // get joystick positions
-        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-        // move the chassis with curvature drive
-        chassis.curvature(leftY, rightX);
+        DriverFunction();
         // delay to save resources
         pros::delay(10);
     }
