@@ -398,6 +398,7 @@ class Chassis {
          */
         void resetLocalPosition();
     protected:
+        float distTravelled = 0;
         /**
          * @brief Indicates that this motion is queued and blocks current task until this motion reaches front of queue
          */
@@ -409,8 +410,6 @@ class Chassis {
 
         bool motionRunning = false;
         bool motionQueued = false;
-
-        float distTravelled = 0;
 
         ControllerSettings lateralSettings;
         ControllerSettings angularSettings;
