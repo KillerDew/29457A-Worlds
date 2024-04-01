@@ -1,6 +1,5 @@
 #include "api.h"
 #include "lemlib/api.hpp"
-#include "lemlib/chassis/chassis.hpp"
 #include "robot.h"
 
 lemlib::ControllerSettings Robot::Tunables::linearController(10,

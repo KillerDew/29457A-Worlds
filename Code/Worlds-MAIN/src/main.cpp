@@ -1,11 +1,12 @@
 #include "main.h"
-#include "lemlib/logger/logger.hpp"
-#include "lemlib/logger/telemetrySink.hpp"
-#include "pros/llemu.hpp"
-#include "pros/rtos.hpp"
 #include "robot.h"
 #include "lemlib/api.hpp"
 
+/*
+TODO: Test Code
+TODO: Comment ALL Code
+TODO: Autonomous
+*/
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.

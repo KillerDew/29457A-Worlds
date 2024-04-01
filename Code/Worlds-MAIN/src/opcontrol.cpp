@@ -1,14 +1,8 @@
-#include "display/lv_misc/lv_color.h"
-#include "lemlib/chassis/chassis.hpp"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
-#include "pros/motors.h"
-#include "pros/optical.hpp"
-#include "pros/rtos.hpp"
 #include "robot.h"
 #include "api.h"
 #include "lemlib/api.hpp"
 #include "Inputs.h"
+#pragma clang diagnostic ignored "-Wreturn-stack-address"
 
 
 const DriverType Robot::OpControl::driverType = Curvature;

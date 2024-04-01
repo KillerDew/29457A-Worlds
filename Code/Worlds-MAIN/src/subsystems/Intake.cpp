@@ -1,11 +1,9 @@
 #include "api.h"
 #include "lemlib/api.hpp"
-#include "pros/motors.h"
-#include "pros/motors.hpp"
-#include "pros/rtos.hpp"
 #include "robot.h"
 #include <cmath>
-#include <sys/_intsup.h>
+
+int Robot::Intake::Direction = 0;
 
 pros::MotorGroup* intake = &Robot::Motors::Intake;
 void Robot::Intake::Outtake(){

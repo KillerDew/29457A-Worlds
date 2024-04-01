@@ -1,6 +1,5 @@
 #include "api.h"
 #include "lemlib/api.hpp"
-#include "pros/misc.hpp"
 #include "utils.h"
 using namespace pros;
 
@@ -8,10 +7,10 @@ using namespace pros;
 class Robot{
     public:
         class autonomous{
-        public:
-            static AutonomousType autonType;
-            static void RunAuton();
-            static bool IsDone;
+            public:
+                static AutonomousType autonType;
+                static void RunAuton();
+                static bool IsDone;
         };
 
         /*

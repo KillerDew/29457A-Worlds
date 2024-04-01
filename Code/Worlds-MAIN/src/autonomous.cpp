@@ -1,10 +1,13 @@
 #include "lemlib/api.hpp"
 #include "api.h"
-#include "lemlib/chassis/chassis.hpp"
-#include "pros/rotation.hpp"
 #include "fieldDimensions.h"
 
 using namespace FieldDimensions;
+
+
+//! CHECK BEFORE MATCH:
+AutonomousType Robot::autonomous::autonType = OffensiveSafe3Ball;
+
 lemlib::Chassis* Chassis = &Robot::chassis;
 bool Robot::autonomous::IsDone = false;
 
@@ -40,7 +43,7 @@ void Robot::autonomous::RunAuton(){
     AutonomousType autType = Robot::autonomous::autonType;
     if (autType == Defensive){
         DefensiveAuton();
-    }else if (autType == OffensiveSafe){
+    }else if (autType == OffensiveSafe3Ball){
         OffensiveSafeAuton();
     }
     Robot::autonomous::IsDone = true;

@@ -1,5 +1,5 @@
 #include "api.h"
-#include "pros/rtos.hpp"
+#include "lemlib/api.hpp"
 #include "utils.h"
 
 double Timer::GetElapsed(){
@@ -59,5 +59,8 @@ std::string Utils::ATypeSTR(AutonomousType type){
             break;
         case 1:
             return "Defensive";
+            break;
+        default:
+            return "?";
     }
 }

@@ -1,6 +1,7 @@
 #include "api.h"
 #include "robot.h"
 
+bool Robot::Wings::EXTENDED = false;
 void Robot::Wings::DropWings(){
     Robot::Wings::EXTENDED = true;
     Robot::Pistons::WingPistons.set_value(true);

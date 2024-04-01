@@ -1,7 +1,40 @@
 #include "api.h"
 #include "Inputs.h"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
+
+
+#pragma region Inits
+    float ControllerInputs::Analogue::LeftX=0;
+    float ControllerInputs::Analogue::LeftY=0;
+    float ControllerInputs::Analogue::RightX=0;
+    float ControllerInputs::Analogue::RightY=0;
+
+    bool ControllerInputs::Digital::New::L1=false;
+    bool ControllerInputs::Digital::New::L2=false;
+    bool ControllerInputs::Digital::New::R1=false;
+    bool ControllerInputs::Digital::New::R2=false;
+    bool ControllerInputs::Digital::New::X=false;
+    bool ControllerInputs::Digital::New::Y=false;
+    bool ControllerInputs::Digital::New::B=false;
+    bool ControllerInputs::Digital::New::A=false;
+    bool ControllerInputs::Digital::New::Down=false;
+    bool ControllerInputs::Digital::New::Up=false;
+    bool ControllerInputs::Digital::New::Left=false;
+    bool ControllerInputs::Digital::New::Right=false;
+
+    bool ControllerInputs::Digital::L1=false;
+    bool ControllerInputs::Digital::L2=false;
+    bool ControllerInputs::Digital::R1=false;
+    bool ControllerInputs::Digital::R2=false;
+    bool ControllerInputs::Digital::X=false;
+    bool ControllerInputs::Digital::Y=false;
+    bool ControllerInputs::Digital::B=false;
+    bool ControllerInputs::Digital::A=false;
+    bool ControllerInputs::Digital::Down=false;
+    bool ControllerInputs::Digital::Up=false;
+    bool ControllerInputs::Digital::Left=false;
+    bool ControllerInputs::Digital::Right=false;
+#pragma endregion
+
 
 void ControllerInputs::GetNews(pros::Controller controller){
     Digital::New::A = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A);

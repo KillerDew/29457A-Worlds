@@ -1,4 +1,3 @@
-
 #include <string>
 class Timer{
     public:
@@ -19,7 +18,7 @@ enum DriverType{
 };
 
 enum AutonomousType{
-    OffensiveSafe=0,
+    OffensiveSafe3Ball=0,
     Defensive=1
 };
 class Utils{

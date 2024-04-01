@@ -1,5 +1,5 @@
 #include "api.h"
-#include "pros/misc.hpp"
+
 
 class ControllerInputs{
     public:

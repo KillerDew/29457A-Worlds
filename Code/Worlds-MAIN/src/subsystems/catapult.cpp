@@ -1,10 +1,8 @@
 #include "api.h"
 #include "lemlib/api.hpp"
-#include "pros/motors.h"
-#include "pros/rtos.hpp"
 #include "robot.h"
 
-
+bool Robot::Catapult::IsOn = false;
 float Robot::Catapult::CatapultSpeed = 0.4;
 const float Robot::Catapult::ShotsPerRotation = 2;
 
