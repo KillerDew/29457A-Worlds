@@ -1,5 +1,5 @@
 #include "lemlib/api.hpp"
-#include "robot.h"
+#include "usr/robot.h"
 
 lemlib::Chassis Robot::chassis (
     Robot::Motors::drivetrain,

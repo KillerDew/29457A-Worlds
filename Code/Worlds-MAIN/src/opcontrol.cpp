@@ -1,7 +1,7 @@
-#include "robot.h"
+#include "usr/robot.h"
 #include "api.h"
 #include "lemlib/api.hpp"
-#include "Inputs.h"
+#include "usr/Inputs.h"
 #pragma clang diagnostic ignored "-Wreturn-stack-address"
 
 

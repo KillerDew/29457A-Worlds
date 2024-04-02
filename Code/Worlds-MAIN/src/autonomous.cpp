@@ -1,6 +1,6 @@
 #include "lemlib/api.hpp"
 #include "api.h"
-#include "fieldDimensions.h"
+#include "usr/fieldDimensions.h"
 
 using namespace FieldDimensions;
 
@@ -16,7 +16,7 @@ void DefensiveAuton(){
     return;
 }
 void WIPOffensive(){
-	Chassis->setPose(OffensiveStartingPos);
+	Chassis->setPose(Offensive3BallSafeStart);
     Chassis->moveToPose(3, -60, LEFT, 500);
     Chassis->moveToPose(48.8, -58.2, 225, 3000, {.forwards=false, .lead=0.2});
     Chassis->waitUntilDone();

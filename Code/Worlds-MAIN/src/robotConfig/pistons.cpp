@@ -1,5 +1,5 @@
 #include "api.h"
-#include "robot.h"
+#include "usr/robot.h"
 using namespace pros;
 
 const ADIDigitalOut Robot::Pistons::WingPistons ('a');

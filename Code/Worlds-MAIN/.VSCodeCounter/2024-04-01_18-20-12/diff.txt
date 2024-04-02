@@ -1,0 +1,52 @@
+Date : 2024-04-01 18:20:12
+Directory : /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/include/usr
+Total : 21 files,  -260 codes, 139 comments, -24 blanks, all -145 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C++      |         21 |       -260 |        139 |        -24 |       -145 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                               |         21 |       -260 |        139 |        -24 |       -145 |
+| . (Files)                                                                                       |          6 |        269 |        193 |         44 |        506 |
+| ..                                                                                              |         15 |       -529 |        -54 |        -68 |       -651 |
+| ../..                                                                                           |         15 |       -529 |        -54 |        -68 |       -651 |
+| ../../src                                                                                       |         15 |       -529 |        -54 |        -68 |       -651 |
+| ../../src (Files)                                                                               |          5 |       -309 |        -53 |        -45 |       -407 |
+| ../../src/robotConfig                                                                           |          6 |        -74 |         -1 |        -12 |        -87 |
+| ../../src/subsystems                                                                            |          4 |       -146 |          0 |        -11 |       -157 |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                        | language | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/include/usr/Inputs.h           | C++      |         49 |         38 |          3 |         90 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/include/usr/api.h              | C++      |         57 |         17 |          7 |         81 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/include/usr/fieldDimensions.h  | C++      |         20 |         18 |          5 |         43 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/include/usr/main.h             | C++      |         19 |         53 |         10 |         82 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/include/usr/robot.h            | C++      |         98 |         39 |          9 |        146 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/include/usr/utils.h            | C++      |         26 |         28 |         10 |         64 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/Inputs.cpp                 | C++      |        -71 |          0 |        -11 |        -82 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/autonomous.cpp             | C++      |        -44 |         -1 |         -5 |        -50 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/main.cpp                   | C++      |        -32 |        -52 |        -10 |        -94 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/opcontrol.cpp              | C++      |        -99 |          0 |        -16 |       -115 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/robotConfig/dimensions.cpp | C++      |         -7 |          0 |         -1 |         -8 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/robotConfig/motors.cpp     | C++      |        -20 |         -1 |         -5 |        -26 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/robotConfig/pistons.cpp    | C++      |         -5 |          0 |         -1 |         -6 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/robotConfig/robot.cpp      | C++      |         -8 |          0 |         -2 |        -10 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/robotConfig/sensors.cpp    | C++      |        -10 |          0 |         -2 |        -12 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/robotConfig/tunables.cpp   | C++      |        -24 |          0 |         -1 |        -25 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/subsystems/BalanceMech.cpp | C++      |        -10 |          0 |         -2 |        -12 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/subsystems/Intake.cpp      | C++      |        -55 |          0 |         -3 |        -58 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/subsystems/catapult.cpp    | C++      |        -53 |          0 |         -5 |        -58 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/subsystems/wings.cpp       | C++      |        -28 |          0 |         -1 |        -29 |
+| /Users/danieldew/Documents/GitHub/29457A-Worlds/Code/Worlds-MAIN/src/utils.cpp                  | C++      |        -63 |          0 |         -3 |        -66 |
+| Total                                                                                           |          |       -260 |        139 |        -24 |       -145 |
++-------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
