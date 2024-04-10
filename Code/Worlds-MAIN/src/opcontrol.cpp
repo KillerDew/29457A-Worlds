@@ -131,7 +131,12 @@ void Robot::OpControl::DriverControlLoop(){
         }else {
             Robot::Catapult::TurnCatapultOff();
         }
-        
+        // Resset Cata Activation
+        if (ControllerInputs::Digital::New::Right){
+            Robot::Catapult::ResetCatapult();
+        }
+
+        // Delay to save rescources
         pros::delay(dt);
     }
 }

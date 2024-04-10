@@ -1,3 +1,4 @@
+#include "pros/motors.h"
 #include "usr/robot.h"
 #include "api.h"
 #include "lemlib/api.hpp"
@@ -5,7 +6,7 @@
 using namespace pros;
 
 Motor Robot::Motors::Catapult (20, E_MOTOR_GEAR_100); // Catapult: Red cartridge, port 20
-MotorGroup Robot::Motors::Intake ({11, -1});
+Motor Robot::Motors::Intake (24, E_MOTOR_GEARSET_06);
 
 
 // * LEFT MOTORS ARE REVERSED

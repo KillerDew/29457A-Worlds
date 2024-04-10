@@ -30,7 +30,7 @@ class Robot{
                 /** @brief The catapult motor*/
                 static Motor Catapult;
                 /** @brief The intake motors*/
-                static MotorGroup Intake;
+                static Motor Intake;
                 /** @brief The left drive motors*/
                 static MotorGroup leftDrive;
                 /** @brief The right drive motors*/
