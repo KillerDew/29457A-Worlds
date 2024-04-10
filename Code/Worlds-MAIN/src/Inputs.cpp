@@ -3,6 +3,7 @@
 
 
 #pragma region Inits
+    //* Initialize all variables
     float ControllerInputs::Analogue::LeftX=0;
     float ControllerInputs::Analogue::LeftY=0;
     float ControllerInputs::Analogue::RightX=0;
@@ -35,7 +36,7 @@
     bool ControllerInputs::Digital::Right=false;
 #pragma endregion
 
-
+// Functions to assign variables at runtime
 void ControllerInputs::GetNews(pros::Controller controller){
     Digital::New::A = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A);
     Digital::New::B = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B);

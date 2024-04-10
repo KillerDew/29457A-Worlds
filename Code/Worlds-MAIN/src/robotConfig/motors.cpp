@@ -4,19 +4,23 @@
 
 using namespace pros;
 
-Motor Robot::Motors::Catapult (6, E_MOTOR_GEAR_100);
+Motor Robot::Motors::Catapult (20, E_MOTOR_GEAR_100); // Catapult: Red cartridge, port 20
 MotorGroup Robot::Motors::Intake ({11, -1});
 
-pros::Motor lF(-17, pros::E_MOTOR_GEARSET_06); // left front motor. port 17, reversed
-pros::Motor lM(-18, pros::E_MOTOR_GEARSET_06); // left middle motor. port 18, reversed
-pros::Motor lB(-19, pros::E_MOTOR_GEARSET_06); // left back motor. port 19, reversed
-pros::Motor rF(7, pros::E_MOTOR_GEARSET_06); // right front motor. port 7
-pros::Motor rM(12, pros::E_MOTOR_GEARSET_06); // right middle motor. port 12
-pros::Motor rB(9, pros::E_MOTOR_GEARSET_06); // right back motor. port 9
+
+// * LEFT MOTORS ARE REVERSED
+pros::Motor lF(-17, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 17
+pros::Motor lM(-18, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 18
+pros::Motor lB(-19, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 19
+pros::Motor rF(7, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 7
+pros::Motor rM(12, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 12
+pros::Motor rB(9, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 9
 
 // motor groups
-MotorGroup Robot::Motors::leftDrive({lF, lM, lB}); // left motor group
-MotorGroup Robot::Motors::rightDrive({rF, rM, rB}); // right motor group
+MotorGroup Robot::Motors::leftDrive({lF, lM, lB}); // left drive motor group
+MotorGroup Robot::Motors::rightDrive({rF, rM, rB}); // right drive motor group
+
+// Decleration of drivetrain
 lemlib::Drivetrain Robot::Motors::drivetrain (&Robot::Motors::leftDrive,
                                             &Robot::Motors::rightDrive,
                                             Robot::Dimensions::TrackWidth,

@@ -15,13 +15,16 @@ TODO: Autonomous
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+    // Initialize screen
 	pros::lcd::initialize();
 
+    // Update status and calibrate
 	lcd::print(3, "Calibrating...");
 	Robot::chassis.calibrate();
 	pros::delay(2000);
 	lcd::print(2, "Calibrated!");
 
+    // Task to update screen with odometry pose
 	pros::Task screenTask([&]() {
         lemlib::Pose pose(0, 0, 0);
         while (true) {
@@ -43,6 +46,7 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
+    // Update Status
 	lcd::print(3, "Disabled");
 }
 
@@ -69,7 +73,9 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+    // Update Status
 	lcd::print(3, "Auton: {}", Utils::ATypeSTR(Robot::autonomous::autonType));
+    //Run Auton
 	Robot::autonomous::RunAuton();
 }
 
@@ -87,7 +93,9 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+    // Update Status
 	lcd::print(3, "Driver Control: {}", Utils::DTypeSTR(Robot::OpControl::driverType));
+    // Start Opcontrol loop
 	Robot::OpControl::DriverControlLoop();
 }
 

@@ -179,6 +179,7 @@ class Robot{
                 /** @brief Ressets catapult to avoid rubber band straining*/
                 static void ResetCatapult();
         };
+        
         /** @brief Contains all members for driver control*/
         class OpControl{
             public:
@@ -201,8 +202,12 @@ class Robot{
                 /** @brief How long after remaining idle to set drivetrain to HOLD*/
                 static const float HOLDThreshold;
             protected:
-                /** @brief Applies deadzones and updates Idle value*/
+                /** @brief Applies deadzones and updates Idle value
+                * @param a The first/throttle input
+                * @param b The second/turn input
+                * @returns a and b with applied deadzones*/
                 static float* ProcessMovementInputs(float a, float b);
+                
                 /** @brief Handles all movement iunputs*/
                 static void DrivetrainMovement();
         };

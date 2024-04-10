@@ -4,20 +4,28 @@
 #include "usr/Inputs.h"
 #pragma clang diagnostic ignored "-Wreturn-stack-address"
 
-
+// Driver Type init
 const DriverType Robot::OpControl::driverType = Curvature;
 
+// Driver loop dt init
 const float Robot::OpControl::dt = 10;
 
+// Init Controller
 const pros::Controller Robot::OpControl::Master (pros::E_CONTROLLER_MASTER);
 
+// Wether to break the loop
 bool Robot::OpControl::breakLoop = false;
 
+// Deadzone for throttle and turn
 const float Robot::OpControl::ThrottleDeadzone = 127*0.05;
 const float Robot::OpControl::TurnDeadzone = 127*0.05;
+
+// Wether the drivetrain is Idle
 bool Robot::OpControl::Idle = true;
+// Time after idle to switch to HOLD
 const float Robot::OpControl::HOLDThreshold = 500;
 
+// Applies deadzones
 float* Robot::OpControl::ProcessMovementInputs(float a, float b){
     if (a > -ThrottleDeadzone && a < ThrottleDeadzone){
         a = 0;
@@ -32,6 +40,7 @@ float* Robot::OpControl::ProcessMovementInputs(float a, float b){
     float output[2]{a, b};
     return output;
 }
+// Processes drivetrain inputs
 void Robot::OpControl::DrivetrainMovement(){
     float a;
         float b;
@@ -69,32 +78,45 @@ void Robot::OpControl::DrivetrainMovement(){
                 break;
         }
 }
+
+// Main driver control loop
 void Robot::OpControl::DriverControlLoop(){
 
+    // Init timers
     Timer Idletimer;
     Timer BalanceTimer;
+    // Only allow Balance mech drop after 60 secs
     BalanceTimer.TurnToAfter(60*1000, &Robot::BalanceMech::CanDrop, true);
 
+    // Set brake mode as coas
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
+    // Main Loop
     while (!breakLoop){
 
+        // Handle HOLD if idle behaviour
         if (Idle && Idletimer.GetElapsed() >= HOLDThreshold){
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
         }else if (!Idle){
             Idletimer.Reset();
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
         }
+        // Get ALL inputs and store in 'ControllerInputs' class
         ControllerInputs::GetInputs(Master);
+
+        // Handle drivetrain movements
         DrivetrainMovement();
 
+        // Balance mech activation (can drop test performed in function)
         if (ControllerInputs::Digital::New::B){
             Robot::BalanceMech::DropBalance(); // Only Works in last 30 secs
         }
+        // Wings buttons
         if (ControllerInputs::Digital::New::R1){
             Robot::Wings::ToggleWings();
         }
 
+        // Intake and outtaking buttons
         if (ControllerInputs::Digital::R2){
             Robot::Intake::Intake_();
         }else if (ControllerInputs::Digital::L2){
@@ -103,11 +125,13 @@ void Robot::OpControl::DriverControlLoop(){
             Robot::Intake::Stop();
         }
         
+        // Catapult Activation
         if (ControllerInputs::Digital::X){
             Robot::Catapult::TurnCatapultOn();
         }else {
             Robot::Catapult::TurnCatapultOff();
         }
+        
         pros::delay(dt);
     }
 }

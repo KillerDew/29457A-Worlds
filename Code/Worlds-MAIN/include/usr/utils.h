@@ -7,7 +7,8 @@ class Timer{
         /** @brief The time of timer being started or reset.*/
         double StartTime;
 
-        /** @brief Gets elsapsed time from start time (time - StartTime)*/
+        /** @brief Gets elsapsed time from start time (time - StartTime)
+        * @returns The elasped time*/
         double GetElapsed();
 
         /**
@@ -30,7 +31,12 @@ class Timer{
         */
         void TurnToAfter(double target, bool* value, bool setTo=true);
 
-        Timer();
+        /**
+        * @brief Timer constructor
+        * @param Override overide start time
+        * @note If override == -1, current time is used
+        */
+        Timer(float Override=-1);
 
 };
 /** @brief Driver control scheme enum*/

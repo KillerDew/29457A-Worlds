@@ -2,7 +2,7 @@
 #include "api.h"
 #include "lemlib/api.hpp"
 
-pros::IMU Robot::Sensors::imu (6);
+pros::IMU Robot::Sensors::imu (3); //IMU on port 3
 const lemlib::OdomSensors Robot::Sensors::odomSensors (nullptr,
                                                        nullptr,
                                                        nullptr,
