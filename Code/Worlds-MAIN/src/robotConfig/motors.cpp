@@ -5,17 +5,17 @@
 
 using namespace pros;
 
-Motor Robot::Motors::Catapult (20, E_MOTOR_GEAR_100); // Catapult: Red cartridge, port 20
-Motor Robot::Motors::Intake (10, E_MOTOR_GEARSET_06);
+Motor Robot::Motors::Catapult (11, E_MOTOR_GEAR_100); // Catapult: Red cartridge, port 20
+Motor Robot::Motors::Intake (9, E_MOTOR_GEARSET_06);
 
 
 // * LEFT MOTORS ARE REVERSED
-pros::Motor lF(-17, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 17
-pros::Motor lM(-18, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 18
-pros::Motor lB(-19, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 19
-pros::Motor rF(7, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 7
-pros::Motor rM(12, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 12
-pros::Motor rB(9, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 9
+pros::Motor lF(-10, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 17
+pros::Motor lM(-8, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 18
+pros::Motor lB(-7, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 19
+pros::Motor rF(20, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 7
+pros::Motor rM(18, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 12
+pros::Motor rB(17, pros::E_MOTOR_GEARSET_06); // Blue catridge, port 9
 
 // motor groups
 MotorGroup Robot::Motors::leftDrive({lF, lM, lB}); // left drive motor group
