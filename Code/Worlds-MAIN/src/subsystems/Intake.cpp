@@ -5,7 +5,7 @@
 
 int Robot::Intake::Direction = 0;
 
-pros::MotorGroup* intake = &Robot::Motors::Intake;
+pros::Motor* intake = &Robot::Motors::Intake;
 void Robot::Intake::Outtake(){
     // Set Motors to reverse and set direction to -1
     intake->move(-127);
@@ -18,7 +18,7 @@ void Robot::Intake::Intake_(){
 }
 void Robot::Intake::Stop(){
     // Make sure brake mode is HOLD
-    intake->set_brake_modes(pros::E_MOTOR_BRAKE_HOLD);
+    intake->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     // stop intake
     intake->brake();
     // Set Direction to 0 (stopped)
