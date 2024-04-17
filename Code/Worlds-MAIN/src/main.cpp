@@ -1,12 +1,20 @@
-#include "api.h"
-#include "usr/robot.h"
-#include "lemlib/api.hpp"
+#include "main.h"
 
-/*
-TODO: Test Code
-TODO: Comment ALL Code
-TODO: Autonomous
-*/
+/**
+ * A callback function for LLEMU's center button.
+ *
+ * When this callback is fired, it will toggle line 2 of the LCD text between
+ * "I was pressed!" and nothing.
+ */
+void on_center_button() {
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(2, "I was pressed!");
+	} else {
+		pros::lcd::clear_line(2);
+	}
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -15,29 +23,10 @@ TODO: Autonomous
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-    // Initialize screen
 	pros::lcd::initialize();
+	pros::lcd::set_text(1, "Hello PROS User!");
 
-    // Update status and calibrate
-	lcd::print(3, "Calibrating...");
-	Robot::chassis.calibrate();
-	pros::delay(2000);
-	lcd::print(2, "Calibrated!");
-
-    // Task to update screen with odometry pose
-	pros::Task screenTask([&]() {
-        lemlib::Pose pose(0, 0, 0);
-        while (true) {
-            // print robot location to the brain screen
-            pros::lcd::print(0, "X: %f", Robot::chassis.getPose().x); // x
-            pros::lcd::print(1, "Y: %f", Robot::chassis.getPose().y); // y
-            pros::lcd::print(2, "Theta: %f", Robot::chassis.getPose().theta); // heading
-            // log position telemetry
-            lemlib::telemetrySink()->info("Chassis pose: {}", Robot::chassis.getPose());
-            // delay to save resources
-            pros::delay(50);
-        }
-    });
+	pros::lcd::register_btn1_cb(on_center_button);
 }
 
 /**
@@ -45,10 +34,7 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {
-    // Update Status
-	lcd::print(3, "Disabled");
-}
+void disabled() {}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -72,12 +58,7 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {
-    // Update Status
-	lcd::print(3, "Auton: {}", Utils::ATypeSTR(Robot::autonomous::autonType));
-    //Run Auton
-	Robot::autonomous::RunAuton();
-}
+void autonomous() {}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -93,9 +74,20 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-    // Update Status
-	lcd::print(3, "Driver Control: {}", Utils::DTypeSTR(Robot::OpControl::driverType));
-    // Start Opcontrol loop
-	Robot::OpControl::DriverControlLoop();
-}
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::Motor left_mtr(1);
+	pros::Motor right_mtr(2);
 
+	while (true) {
+		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
+		int left = master.get_analog(ANALOG_LEFT_Y);
+		int right = master.get_analog(ANALOG_RIGHT_Y);
+
+		left_mtr = left;
+		right_mtr = right;
+
+		pros::delay(20);
+	}
+}

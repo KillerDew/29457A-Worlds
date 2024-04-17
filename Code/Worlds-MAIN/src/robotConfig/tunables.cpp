@@ -11,14 +11,14 @@ lemlib::ControllerSettings Robot::Tunables::linearController(10,
                                                              100,
                                                              3,
                                                              500,
-                                                             2                                     
+                                                             20                                   
 );
 // ANgular controller
 lemlib::ControllerSettings Robot::Tunables::angularController(2,
                                                               0,
                                                               10,
                                                               3,
-                                                              1,
+                                                              1,   
                                                               100,
                                                               3,
                                                               500,

@@ -54,20 +54,20 @@ void ControllerInputs::GetNews(pros::Controller controller){
     Digital::New::Left = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT);
 }
 void ControllerInputs::GetDigis(pros::Controller controller){
-    Digital::A = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A);
-    Digital::B = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B);
-    Digital::X = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X);
-    Digital::Y = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y);
+    Digital::A = controller.get_digital(pros::E_CONTROLLER_DIGITAL_A);
+    Digital::B = controller.get_digital(pros::E_CONTROLLER_DIGITAL_B);
+    Digital::X = controller.get_digital(pros::E_CONTROLLER_DIGITAL_X);
+    Digital::Y = controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y);
 
-    Digital::L1 = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1);
-    Digital::L2 = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1);
-    Digital::R1 = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1);
-    Digital::R2 = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2);
+    Digital::L1 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
+    Digital::L2 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2);
+    Digital::R1 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
+    Digital::R2 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
 
-    Digital::Up = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP);
-    Digital::Right = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT);
-    Digital::Down = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN);
-    Digital::Left = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT);
+    Digital::Up = controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP);
+    Digital::Right = controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT);
+    Digital::Down = controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
+    Digital::Left = controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT);
 }
 void ControllerInputs::GetAnalogues(pros::Controller controller){
     Analogue::LeftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);

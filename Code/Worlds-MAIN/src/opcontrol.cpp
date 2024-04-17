@@ -1,7 +1,9 @@
+#include "pros/llemu.hpp"
 #include "usr/robot.h"
 #include "api.h"
 #include "lemlib/api.hpp"
 #include "usr/Inputs.h"
+#include <vector>
 #pragma clang diagnostic ignored "-Wreturn-stack-address"
 
 // Driver Type init
@@ -17,16 +19,18 @@ const pros::Controller Robot::OpControl::Master (pros::E_CONTROLLER_MASTER);
 bool Robot::OpControl::breakLoop = false;
 
 // Deadzone for throttle and turn
-const float Robot::OpControl::ThrottleDeadzone = 127*0.05;
-const float Robot::OpControl::TurnDeadzone = 127*0.05;
+const float Robot::OpControl::ThrottleDeadzone = 0;
+const float Robot::OpControl::TurnDeadzone = 0;
 
 // Wether the drivetrain is Idle
 bool Robot::OpControl::Idle = true;
 // Time after idle to switch to HOLD
-const float Robot::OpControl::HOLDThreshold = 500;
+const float Robot::OpControl::HOLDThreshold = 1500;
 
 // Applies deadzones
-float* Robot::OpControl::ProcessMovementInputs(float a, float b){
+std::vector<float> Robot::OpControl::ProcessMovementInputs(float a, float b){
+    if (ThrottleDeadzone == 0 && TurnDeadzone == 0)
+        return std::vector<float> ({a, b});
     if (a > -ThrottleDeadzone && a < ThrottleDeadzone){
         a = 0;
     }
@@ -37,60 +41,60 @@ float* Robot::OpControl::ProcessMovementInputs(float a, float b){
         Idle = true;
     else
      Idle = false;
-    float output[2]{a, b};
+    std::vector<float> output ({a, b});
     return output;
 }
 // Processes drivetrain inputs
 void Robot::OpControl::DrivetrainMovement(){
     float a;
-        float b;
-        float* inputs;
-        switch (driverType) {
-            case 0: // Arcade
-                a = ControllerInputs::Analogue::LeftY;
-                b = ControllerInputs::Analogue::LeftX;
-                inputs = ProcessMovementInputs(a, b);
-                chassis.arcade(inputs[0], inputs[1]);
-                break;
-            case 1: // Split Arcade
-                a = ControllerInputs::Analogue::LeftY;
-                b = ControllerInputs::Analogue::RightX;
-                inputs = ProcessMovementInputs(a, b);
-                chassis.arcade(inputs[0], inputs[1]);
-                break;
-            case 2: // Curvature
-                a = ControllerInputs::Analogue::LeftY;
-                b = ControllerInputs::Analogue::LeftX;
-                inputs = ProcessMovementInputs(a, b);
-                chassis.curvature(inputs[0], inputs[1]);
-                break;
-            case 3: // Split Curvature
-                a = ControllerInputs::Analogue::LeftY;
-                b = ControllerInputs::Analogue::RightX;
-                inputs = ProcessMovementInputs(a, b);
-                chassis.curvature(inputs[0], inputs[1]);
-                break;
-            case 4:
-                a = ControllerInputs::Analogue::LeftY;
-                b = ControllerInputs::Analogue::RightY;
-                inputs = ProcessMovementInputs(a, b);
-                chassis.tank(inputs[0], inputs[1]);
-                break;
-        }
+    float b;
+    std::vector<float> inputs;
+    switch (driverType) {
+        case 0: // Arcade
+            a = ControllerInputs::Analogue::LeftY;
+            b = ControllerInputs::Analogue::LeftX;
+            inputs = ProcessMovementInputs(a, b);
+            chassis.arcade(inputs[0], inputs[1], 2.7);
+            break;
+        case 1: // Split Arcade
+            a = ControllerInputs::Analogue::LeftY;
+            b = ControllerInputs::Analogue::RightX;
+            inputs = ProcessMovementInputs(a, b);
+            chassis.arcade(inputs[0], inputs[1], 2.7);
+            break;
+        case 2: // Curvature
+            a = ControllerInputs::Analogue::LeftY;
+            b = ControllerInputs::Analogue::LeftX;
+            inputs = ProcessMovementInputs(a, b);
+            a = inputs[0];
+            b = inputs[1];
+            chassis.curvature(a, b);
+            break;
+        case 3: // Split Curvature
+            a = ControllerInputs::Analogue::LeftY;
+            b = ControllerInputs::Analogue::RightX;
+            inputs = ProcessMovementInputs(a, b);
+            chassis.curvature(inputs[0], inputs[1], 2.7);
+            break;
+        case 4:
+            a = ControllerInputs::Analogue::LeftY;
+            b = ControllerInputs::Analogue::RightY;
+            inputs = ProcessMovementInputs(a, b);
+            chassis.tank(inputs[0], inputs[1], 2.7);
+            break;
+    }
 }
 
 // Main driver control loop
 void Robot::OpControl::DriverControlLoop(){
-
     // Init timers
     Timer Idletimer;
     Timer BalanceTimer;
     // Only allow Balance mech drop after 60 secs
     BalanceTimer.TurnToAfter(60*1000, &Robot::BalanceMech::CanDrop, true);
-
     // Set brake mode as coas
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
-
+    
     // Main Loop
     while (!breakLoop){
 
@@ -106,7 +110,6 @@ void Robot::OpControl::DriverControlLoop(){
 
         // Handle drivetrain movements
         DrivetrainMovement();
-
         // Balance mech activation (can drop test performed in function)
         if (ControllerInputs::Digital::New::B){
             Robot::BalanceMech::DropBalance(); // Only Works in last 30 secs

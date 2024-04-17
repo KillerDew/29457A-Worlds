@@ -1,5 +1,6 @@
 #include "api.h"
 #include "lemlib/api.hpp"
+#include "pros/motors.h"
 #include "usr/robot.h"
 #include <cmath>
 
@@ -8,17 +9,17 @@ int Robot::Intake::Direction = 0;
 pros::Motor* intake = &Robot::Motors::Intake;
 void Robot::Intake::Outtake(){
     // Set Motors to reverse and set direction to -1
-    intake->move(-127);
+    intake->move(127);
     Direction = -1;
 }
 void Robot::Intake::Intake_(){
     // Set Motors to forwards and set direction to 1
-    intake->move(127);
+    intake->move(-127);
     Direction=1;
 }
 void Robot::Intake::Stop(){
     // Make sure brake mode is HOLD
-    intake->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    intake->set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     // stop intake
     intake->brake();
     // Set Direction to 0 (stopped)

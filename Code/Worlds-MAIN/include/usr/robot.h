@@ -1,6 +1,7 @@
 #include "api.h"
 #include "lemlib/api.hpp"
 #include "utils.h"
+#include <vector>
 using namespace pros;
 
 
@@ -206,7 +207,7 @@ class Robot{
                 * @param a The first/throttle input
                 * @param b The second/turn input
                 * @returns a and b with applied deadzones*/
-                static float* ProcessMovementInputs(float a, float b);
+                static std::vector<float> ProcessMovementInputs(float a, float b);
                 
                 /** @brief Handles all movement iunputs*/
                 static void DrivetrainMovement();

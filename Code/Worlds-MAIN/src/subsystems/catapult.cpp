@@ -4,7 +4,7 @@
 #include "usr/robot.h"
 
 bool Robot::Catapult::IsOn = false;
-float Robot::Catapult::CatapultSpeed = 0.4;
+float Robot::Catapult::CatapultSpeed = 0.6;
 const float Robot::Catapult::ShotsPerRotation = 2;
 
 pros::Motor CataMotor = Robot::Motors::Catapult;
