@@ -5,6 +5,7 @@
 #include "pros/motors.h"
 #include "pros/motors.hpp"
 #include <sys/syslimits.h>
+#include "robot.h"
 
 /////
 // For installation, upgrading, documentations and tutorials, check out our website!
@@ -35,11 +36,12 @@ ez::Drive chassis (
   // eg. if your drive is 84:36 where the 36t is powered, your RATIO would be 84/36 which is 2.333
   // eg. if your drive is 60:36 where the 36t is powered, your RATIO would be 60/36 which is 0.6
   // eg. if your drive is 36:60 where the 60t is powered, your RATIO would be 36/60 which is 0.6
-  ,0.6
+  ,60.0/36.0
 );
 pros::Controller Master (pros::E_CONTROLLER_MASTER);
-pros::Motor Intake (9, pros::E_MOTOR_GEARSET_06);
-pros::ADIDigitalOut Wings ('a');
+pros::Motor Robot::Intake (12, pros::E_MOTOR_GEAR_600);
+pros::ADIDigitalOut Robot::Wings ('a');
+bool Robot::WingsExtended = false;
 pros::ADIDigitalOut BalanceMech('b');
 pros::ADIDigitalOut PassiveA ('c');
 bool WingsExtended = false;
@@ -60,8 +62,9 @@ void initialize() {
 
   // Configure your chassis controls
   chassis.opcontrol_curve_buttons_toggle(true); // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(0); // Sets the active brake kP. We recommend 2.
-  chassis.opcontrol_curve_default_set(0, 0); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
+  chassis.opcontrol_drive_activebrake_set(2); // Sets the active brake kP. We recommend 2.
+  chassis.opcontrol_curve_sd_initialize();
+  chassis.opcontrol_joystick_threshold_set(5);
   default_constants(); // Set the drive to your own constants from autons.cpp!
 
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
@@ -70,6 +73,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    Auton("Safe Far Side", SafeFarSide),
     Auton("Example Drive\n\nDrive forward and come back.", drive_example),
     Auton("Example Turn\n\nTurn 3 times.", turn_example),
     Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
@@ -78,7 +82,8 @@ void initialize() {
     Auton("Combine all 3 movements", combining_movements),
     Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
   });
-
+  chassis.pid_tuner_increment_p_set(1);
+  chassis.pid_tuner_increment_d_set(.5);
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
@@ -128,12 +133,12 @@ void autonomous() {
   chassis.pid_targets_reset(); // Resets PID targets to 0
   chassis.drive_imu_reset(); // Reset gyro position to 0
   chassis.drive_sensor_reset(); // Reset drive sensors to 0
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold.  This helps autonomous consistency
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD); // Set motors to hold.  This helps autonomous consistency
 
-  // ez::as::auton_selector.selected_auton_call(); // Calls selected auton from autonomous selector
+  ez::as::auton_selector.selected_auton_call(); // Calls selected auton from autonomous selector
+  return;
   int dist = 48;
   chassis.pid_drive_set(dist, 127, true);
-  chassis.pid_wait_until(dist - 5);
 
   int dist2 = -(dist-6);
   chassis.pid_drive_set(dist2, 127, true);
@@ -157,7 +162,7 @@ void autonomous() {
  */
 void opcontrol() {
   // This is preference to what you like to drive on
-  chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
   
   while (true) {
     
@@ -178,12 +183,26 @@ void opcontrol() {
       chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
     } 
 
-    chassis.opcontrol_tank(); // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE); // Standard single arcade
+    //chassis.opcontrol_tank(); // Tank control
+    //chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
+    chassis.opcontrol_arcade_standard(ez::SINGLE); // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT); // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE); // Flipped single arcade
 
+  
+    if (Master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+      Robot::Intake = 127;
+    }
+    else if (Master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+      Robot::Intake = -127;
+    }else {
+      Robot::Intake=0;
+    }
+
+    if (Master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)){
+      Robot::WingsExtended = !WingsExtended;
+      Robot::Wings.set_value(WingsExtended);
+    }
     // . . .
     // Put more user control code here!
     // . . .

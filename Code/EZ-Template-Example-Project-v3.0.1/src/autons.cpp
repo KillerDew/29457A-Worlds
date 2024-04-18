@@ -1,4 +1,9 @@
+#include "autons.hpp"
+#include "EZ-Template/util.hpp"
 #include "main.h"
+#include "pros/motors.h"
+#include "pros/rtos.hpp"
+#include "robot.h"
 
 /////
 // For installation, upgrading, documentations and tutorials, check out our website!
@@ -10,13 +15,48 @@ const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
+
+
+void SafeFarSide(){
+  Robot::Intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  Robot::Intake = -127;
+  pros::delay(500);
+  chassis.pid_drive_set(12, 50, true);
+  chassis.pid_wait();
+  pros::delay(100);
+  Robot::Intake = 0;
+  chassis.pid_drive_set(-28, 100);
+  chassis.pid_wait();
+  chassis.pid_swing_set(ez::LEFT_SWING, -45, 70);
+  chassis.pid_wait();
+  Robot::Wings.set_value(true);
+  chassis.pid_drive_set(-21, 90, true);
+  chassis.pid_wait();
+  Robot::Wings.set_value(false);
+  chassis.pid_turn_set(-255, 60, true);
+  chassis.pid_wait();
+  Robot::Intake = 127;
+  pros::delay(500);
+  Robot::Intake=0;
+  chassis.pid_wait();
+  chassis.pid_turn_set(-100, 60, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-11, 110);
+  chassis.pid_wait();
+
+
+}
+
+
+
+
 ///
 // Constants
 ///
 void default_constants() {
   chassis.pid_heading_constants_set(3, 0, 20);
-  chassis.pid_drive_constants_set(10, 0, 100);
-  chassis.pid_turn_constants_set(3, 0, 20);
+  chassis.pid_drive_constants_set(30, 0, 10);
+  chassis.pid_turn_constants_set(4, 0, 19);
   chassis.pid_swing_constants_set(5, 0, 30);
 
   chassis.pid_turn_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 750_ms, 750_ms);
@@ -110,6 +150,8 @@ void wait_until_change_speed() {
   chassis.pid_speed_max_set(30);  // After driving 6 inches at DRIVE_SPEED, the robot will go the remaining distance at 30 speed
   chassis.pid_wait();
 }
+
+
 
 ///
 // Swing Example
