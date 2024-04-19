@@ -5,6 +5,7 @@
 #include "pros/motors.h"
 #include "pros/motors.hpp"
 #include <sys/syslimits.h>
+#include "pros/rtos.hpp"
 #include "robot.h"
 
 /////
@@ -40,6 +41,7 @@ ez::Drive chassis (
 );
 pros::Controller Master (pros::E_CONTROLLER_MASTER);
 pros::Motor Robot::Intake (12, pros::E_MOTOR_GEAR_600);
+//pros::MotorGroup Robot::Intake ({pros::Motor(12, pros::E_MOTOR_GEAR_600), pros::Motor(-20, pros::E_MOTOR_GEAR_600)}) // MUST SET SECOND MOTOR TO CORRECT PORT AND UNCOMMENT IN robot.h;
 pros::ADIDigitalOut Robot::Wings ('a');
 bool Robot::WingsExtended = false;
 pros::ADIDigitalOut BalanceMech('b');
@@ -55,6 +57,7 @@ bool PassiveExtended = false;
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+  BalanceMech.set_value(true);
   // Print our branding over your terminal :D
   ez::ez_template_print();
   
@@ -73,6 +76,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    Auton("Defensive", Defensive),
     Auton("Safe Far Side", SafeFarSide),
     Auton("Example Drive\n\nDrive forward and come back.", drive_example),
     Auton("Example Turn\n\nTurn 3 times.", turn_example),
@@ -82,8 +86,6 @@ void initialize() {
     Auton("Combine all 3 movements", combining_movements),
     Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
   });
-  chassis.pid_tuner_increment_p_set(1);
-  chassis.pid_tuner_increment_d_set(.5);
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
@@ -130,19 +132,13 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+  Robot::Intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   chassis.pid_targets_reset(); // Resets PID targets to 0
   chassis.drive_imu_reset(); // Reset gyro position to 0
   chassis.drive_sensor_reset(); // Reset drive sensors to 0
   chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD); // Set motors to hold.  This helps autonomous consistency
 
   ez::as::auton_selector.selected_auton_call(); // Calls selected auton from autonomous selector
-  return;
-  int dist = 48;
-  chassis.pid_drive_set(dist, 127, true);
-
-  int dist2 = -(dist-6);
-  chassis.pid_drive_set(dist2, 127, true);
-  chassis.pid_wait_until(dist2 + 5);
 }
 
 
@@ -161,23 +157,16 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+  Robot::WingsExtended = false;
+  Robot::Wings.set_value(false);
   // This is preference to what you like to drive on
   chassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
-  
   while (true) {
-    
     // PID Tuner
     // After you find values that you're happy with, you'll have to set them in auton.cpp
-    if (!pros::competition::is_connected()) { 
-      // Enable / Disable PID Tuner
-      //  When enabled: 
-      //  * use A and Y to increment / decrement the constants
-      //  * use the arrow keys to navigate the constants
-      if (master.get_digital_new_press(DIGITAL_X)) 
-        chassis.pid_tuner_toggle();
-        
+    if (!pros::competition::is_connected()) {
       // Trigger the selected autonomous routine
-      if (master.get_digital_new_press(DIGITAL_B)) 
+      if (master.get_digital_new_press(DIGITAL_L1)) 
         autonomous();
 
       chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
@@ -200,8 +189,15 @@ void opcontrol() {
     }
 
     if (Master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)){
-      Robot::WingsExtended = !WingsExtended;
-      Robot::Wings.set_value(WingsExtended);
+      Robot::WingsExtended = !Robot::WingsExtended;
+      Robot::Wings.set_value(Robot::WingsExtended);
+    }
+    if (Master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+      PassiveExtended = !PassiveExtended;
+      PassiveA.set_value(PassiveExtended);
+    }
+    if (Master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
+      BalanceMech.set_value(false);
     }
     // . . .
     // Put more user control code here!

@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "EZ-Template-Example",
+    "project_name": "Worlds!",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -333,7 +333,8 @@
       }
     },
     "upload_options": {
-      "after": "run"
+      "after": "run",
+      "icon": "power"
     }
   }
 }

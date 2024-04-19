@@ -19,32 +19,80 @@ const int SWING_SPEED = 90;
 
 void SafeFarSide(){
   Robot::Intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  // Drop intal and take 1st ball
   Robot::Intake = -127;
   pros::delay(500);
   chassis.pid_drive_set(12, 50, true);
   chassis.pid_wait();
   pros::delay(100);
   Robot::Intake = 0;
-  chassis.pid_drive_set(-28, 100);
+  //--
+  // Navigate and line up to ML bar
+  chassis.pid_drive_set(-28, 70, true);
   chassis.pid_wait();
   chassis.pid_swing_set(ez::LEFT_SWING, -45, 70);
   chassis.pid_wait();
+  //--
+  // Dislodge ML ball
   Robot::Wings.set_value(true);
   chassis.pid_drive_set(-21, 90, true);
   chassis.pid_wait();
   Robot::Wings.set_value(false);
+  //--
   chassis.pid_turn_set(-255, 60, true);
   chassis.pid_wait();
   Robot::Intake = 127;
   pros::delay(500);
   Robot::Intake=0;
   chassis.pid_wait();
-  chassis.pid_turn_set(-100, 60, true);
+  chassis.pid_turn_set(-80, 60, false);
   chassis.pid_wait();
-  chassis.pid_drive_set(-11, 110);
+  chassis.pid_drive_set(-17.5, 127);
+  chassis.pid_wait();
+  chassis.pid_swing_set(ez::RIGHT_SWING, -40, 90, 10);
+  chassis.pid_wait();
+  chassis.pid_drive_set(40, 100);
+  chassis.pid_wait();
+  chassis.pid_turn_set(0, 90);
+  chassis.pid_wait();
+  chassis.pid_drive_set(22, 80, true);
   chassis.pid_wait();
 
-
+}
+void Defensive(){
+  chassis.pid_swing_set(ez::RIGHT_SWING, 45, 100, 65);
+  chassis.pid_wait();
+  Robot::Intake = -127;
+  chassis.pid_drive_set(1, 127);
+  chassis.pid_wait();
+  Robot::Intake = 0;
+  chassis.pid_drive_set(-13, 127);
+  chassis.pid_wait();
+  chassis.pid_drive_set(8, 127);
+  chassis.pid_wait();
+  chassis.pid_turn_relative_set(181, 110);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-3, 100);
+  chassis.pid_wait();
+  chassis.pid_swing_set(ez::LEFT_SWING, 180, 100, 10);
+  chassis.pid_wait();
+  Robot::Wings.set_value(true);
+  chassis.pid_drive_set(-20, 110);
+  chassis.pid_wait();
+  chassis.pid_turn_relative_set(10, 50);
+  chassis.pid_wait();
+  Robot::Wings.set_value(false);
+  chassis.pid_turn_relative_set(180, 115);
+  chassis.pid_wait();
+  chassis.pid_swing_relative_set(ez::RIGHT_SWING, -50, 100, 12);
+  chassis.pid_wait();
+  chassis.pid_drive_set(23, 90);
+  chassis.pid_wait_until(10);
+  Robot::Intake = 127;
+  chassis.pid_wait();
+  pros::delay(3000);
+  Robot::Intake = 0;
+  return;
 }
 
 

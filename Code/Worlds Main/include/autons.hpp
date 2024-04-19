@@ -5,6 +5,7 @@
 extern Drive chassis;
 
 void SafeFarSide();
+void Defensive();
 void drive_example();
 void turn_example();
 void drive_and_turn();
